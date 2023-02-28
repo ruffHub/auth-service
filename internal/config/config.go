@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func loadEnvFile() {
+func init() {
 	err := godotenv.Load("config/.env")
 
 	if err != nil {
@@ -15,7 +15,5 @@ func loadEnvFile() {
 }
 
 func GetEnvVar(key string) string {
-	loadEnvFile()
-
 	return os.Getenv(key)
 }
