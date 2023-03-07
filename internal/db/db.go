@@ -2,6 +2,7 @@ package db
 
 import (
 	"auth-service/internal/config"
+
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -10,7 +11,7 @@ import (
 	"time"
 )
 
-func ConnectDB() *mongo.Client {
+func NewDBConnection() *mongo.Client {
 	client, err := mongo.NewClient(options.Client().ApplyURI(config.GetEnvVar("MONGOURI")))
 	if err != nil {
 		log.Fatal(err)
@@ -30,11 +31,6 @@ func ConnectDB() *mongo.Client {
 	return client
 }
 
-// Client instance
-var DB *mongo.Client = ConnectDB()
-
-// Getting database collections
-func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("authorization").Collection(collectionName)
-	return collection
+func GetCollection(c *mongo.Client, collectionName string) *mongo.Collection {
+	return c.Database(config.GetEnvVar("MONGO_DB_NAME")).Collection(collectionName)
 }

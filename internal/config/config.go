@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func init() {
+func LoadEnv() {
 	err := godotenv.Load("config/.env")
 
 	if err != nil {

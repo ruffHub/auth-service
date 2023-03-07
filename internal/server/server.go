@@ -2,26 +2,27 @@ package server
 
 import (
 	"auth-service/internal/config"
-	"auth-service/internal/routes"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func StartHttpServer() {
-	router := newRouter()
-	registerRoutes(router)
-	listenAndServe(router)
+type RouteHandlersRegisterer interface {
+	RegisterRoutes(router *mux.Router)
 }
 
-func newRouter() *mux.Router {
-	router := mux.NewRouter()
-
-	return router
+func RegisterRoutes(router *mux.Router, modules ...RouteHandlersRegisterer) {
+	for _, module := range modules {
+		module.RegisterRoutes(router)
+	}
 }
 
-func registerRoutes(r *mux.Router) {
-	routes.RegisterUserRoutes(r)
+func NewRouter() *mux.Router {
+	return mux.NewRouter()
+}
+
+func StartHttpServer(r *mux.Router) {
+	listenAndServe(r)
 }
 
 func listenAndServe(r *mux.Router) {
