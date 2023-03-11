@@ -1,4 +1,4 @@
-package responses
+package server
 
 type Data map[string]interface{}
 

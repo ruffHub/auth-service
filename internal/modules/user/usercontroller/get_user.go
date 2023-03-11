@@ -1,7 +1,7 @@
 package usercontroller
 
 import (
-	"auth-service/internal/responses"
+	"auth-service/internal/server"
 	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -22,13 +22,13 @@ func (c Controller) GetUser() http.HandlerFunc {
 
 		if err != nil {
 			rw.WriteHeader(http.StatusInternalServerError)
-			response := responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: responses.Data{"error": err.Error()}}
+			response := server.Response{Status: http.StatusInternalServerError, Message: "error", Data: server.Data{"error": err.Error()}}
 			json.NewEncoder(rw).Encode(response)
 			return
 		}
 
 		rw.WriteHeader(http.StatusOK)
-		response := responses.Response{Status: http.StatusOK, Message: "success", Data: responses.Data{"user": user}}
+		response := server.Response{Status: http.StatusOK, Message: "success", Data: server.Data{"user": user}}
 		json.NewEncoder(rw).Encode(response)
 	}
 }
