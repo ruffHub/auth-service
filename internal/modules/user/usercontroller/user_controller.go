@@ -1,28 +1,16 @@
 package usercontroller
 
 import (
-	"github.com/ruffHub/auth-service/internal/modules/user/userservice"
-	"net/http"
+	"context"
+	"github.com/ruffHub/auth-service/internal/modules/user/usermodel"
 )
 
+type UserService interface {
+	CreateUser(ctx context.Context, user usermodel.User) (usermodel.User, error)
+	GetUser(ctx context.Context, userId string) (usermodel.User, error)
+	GetAllUsers(ctx context.Context) ([]usermodel.User, error)
+}
+
 type Controller struct {
-	userService userservice.UserService
-}
-
-type ControllerUseCases interface {
-	UserCreator
-	UserGetter
-	UserAllGetter
-}
-
-type UserCreator interface {
-	CreateUser() http.HandlerFunc
-}
-
-type UserGetter interface {
-	GetUser() http.HandlerFunc
-}
-
-type UserAllGetter interface {
-	GetAllUsers() http.HandlerFunc
+	userService UserService
 }

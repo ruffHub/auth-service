@@ -8,10 +8,29 @@ import (
 	"github.com/ruffHub/auth-service/internal/modules/user/userrepository"
 	"github.com/ruffHub/auth-service/internal/modules/user/userservice"
 	"go.mongodb.org/mongo-driver/mongo"
+	"net/http"
 )
 
+type Handlers interface {
+	CreatorHandler
+	GetterHandler
+	AllGetterHandler
+}
+
+type CreatorHandler interface {
+	CreateUser() http.HandlerFunc
+}
+
+type GetterHandler interface {
+	GetUser() http.HandlerFunc
+}
+
+type AllGetterHandler interface {
+	GetAllUsers() http.HandlerFunc
+}
+
 type Module struct {
-	controller usercontroller.ControllerUseCases
+	handlers Handlers
 }
 
 func NewUserModule(mongoClient *mongo.Client) Module {
@@ -26,9 +45,9 @@ func NewUserModule(mongoClient *mongo.Client) Module {
 func (m Module) RegisterRoutes(router *mux.Router) {
 	apiV := "/api/" + config.GetEnvVar("API_VERSION")
 
-	router.HandleFunc(apiV+"/user", m.controller.CreateUser()).Methods("POST")
-	router.HandleFunc(apiV+"/user/getAll", m.controller.GetAllUsers()).Methods("GET")
-	router.HandleFunc(apiV+"/user/{userId}", m.controller.GetUser()).Methods("GET")
+	router.HandleFunc(apiV+"/user", m.handlers.CreateUser()).Methods("POST")
+	router.HandleFunc(apiV+"/user/getAll", m.handlers.GetAllUsers()).Methods("GET")
+	router.HandleFunc(apiV+"/user/{userId}", m.handlers.GetUser()).Methods("GET")
 	//router.HandleFunc(apiV+"/user/{userId}", m.controller.EditAUser()).Methods("PUT")
 	//router.HandleFunc(apiV+"/user/{userId}", m.controller.DeleteAUser()).Methods("DELETE")
 }

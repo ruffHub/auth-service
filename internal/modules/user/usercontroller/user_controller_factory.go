@@ -5,6 +5,6 @@ import (
 )
 
 // NewUserController returns initialized Controller
-func NewUserController(c userservice.Service) Controller {
-	return Controller{c}
+func NewUserController(s userservice.Service) Controller {
+	return Controller{userService: s}
 }

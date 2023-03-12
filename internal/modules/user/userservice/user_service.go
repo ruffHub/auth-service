@@ -27,12 +27,6 @@ type Service struct {
 	userRepository UserRepository
 }
 
-type UserService interface {
-	CreateUser(ctx context.Context, user usermodel.User) (usermodel.User, error)
-	GetUser(ctx context.Context, userId string) (usermodel.User, error)
-	GetAllUsers(ctx context.Context) ([]usermodel.User, error)
-}
-
 // CreateUser method implements UserService.GetUser
 func (s Service) CreateUser(ctx context.Context, user usermodel.User) (usermodel.User, error) {
 	createdUser, err := s.userRepository.Create(ctx, user)
