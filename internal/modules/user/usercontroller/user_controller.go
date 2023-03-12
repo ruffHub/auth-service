@@ -1,7 +1,7 @@
 package usercontroller
 
 import (
-	"auth-service/internal/modules/user/userservice"
+	"github.com/ruffHub/auth-service/internal/modules/user/userservice"
 	"net/http"
 )
 

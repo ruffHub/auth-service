@@ -1,11 +1,11 @@
 package usercontroller
 
 import (
-	"auth-service/internal/modules/user/usermodel"
-	"auth-service/internal/server"
 	"context"
 	"encoding/json"
 	"github.com/go-playground/validator/v10"
+	"github.com/ruffHub/auth-service/internal/modules/user/usermodel"
+	"github.com/ruffHub/auth-service/internal/server"
 	"net/http"
 	"time"
 )

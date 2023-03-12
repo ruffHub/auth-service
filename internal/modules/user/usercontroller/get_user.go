@@ -1,10 +1,10 @@
 package usercontroller
 
 import (
-	"auth-service/internal/server"
 	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/ruffHub/auth-service/internal/server"
 	"net/http"
 	"time"
 )

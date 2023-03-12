@@ -1,12 +1,12 @@
 package user
 
 import (
-	"auth-service/internal/config"
-	"auth-service/internal/db"
-	"auth-service/internal/modules/user/usercontroller"
-	"auth-service/internal/modules/user/userrepository"
-	"auth-service/internal/modules/user/userservice"
 	"github.com/gorilla/mux"
+	"github.com/ruffHub/auth-service/internal/config"
+	"github.com/ruffHub/auth-service/internal/db"
+	"github.com/ruffHub/auth-service/internal/modules/user/usercontroller"
+	"github.com/ruffHub/auth-service/internal/modules/user/userrepository"
+	"github.com/ruffHub/auth-service/internal/modules/user/userservice"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

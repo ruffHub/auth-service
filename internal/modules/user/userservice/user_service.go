@@ -1,16 +1,30 @@
 package userservice
 
 import (
-	"auth-service/internal/modules/user/usermodel"
-	"auth-service/internal/modules/user/userrepository"
 	"context"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"log"
+	"github.com/ruffHub/auth-service/internal/modules/user/usermodel"
 )
 
+type UserRepository interface {
+	UserCreator
+	UserGetter
+	UserAllGetter
+}
+
+type UserCreator interface {
+	Create(ctx context.Context, u usermodel.User) (usermodel.User, error)
+}
+
+type UserGetter interface {
+	Get(ctx context.Context, userId string) (usermodel.User, error)
+}
+
+type UserAllGetter interface {
+	GetAll(ctx context.Context) ([]usermodel.User, error)
+}
+
 type Service struct {
-	userRepository userrepository.UserRepository
+	userRepository UserRepository
 }
 
 type UserService interface {
@@ -21,57 +35,21 @@ type UserService interface {
 
 // CreateUser method implements UserService.GetUser
 func (s Service) CreateUser(ctx context.Context, user usermodel.User) (usermodel.User, error) {
-	var createdUser usermodel.User
-	result, err := s.userRepository.Create(ctx, user)
+	createdUser, err := s.userRepository.Create(ctx, user)
 
-	if err != nil {
-		return createdUser, nil
-	}
-
-	return usermodel.User{Id: result.InsertedID.(primitive.ObjectID).Hex()}, nil
+	return createdUser, err
 }
 
 // GetUser method implements UserService.GetUser
 func (s Service) GetUser(ctx context.Context, userId string) (usermodel.User, error) {
-	objId, _ := primitive.ObjectIDFromHex(userId)
-	var user usermodel.User
-
-	err := s.userRepository.Get(ctx, objId).Decode(&user)
-
-	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			return user, err
-		}
-
-		panic(err)
-	}
+	user, err := s.userRepository.Get(ctx, userId)
 
 	return user, err
 }
 
 // GetAllUsers method implements UserService.GetAllUsers
 func (s Service) GetAllUsers(ctx context.Context) ([]usermodel.User, error) {
-	var users []usermodel.User
-
-	cursor, err := s.userRepository.GetAll(ctx)
-	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			return users, err
-		}
-
-		panic(err)
-	}
-
-	//reading from the db in an optimal way
-	defer cursor.Close(ctx)
-	for cursor.Next(ctx) {
-		var singleUser usermodel.User
-		if err = cursor.Decode(&singleUser); err != nil {
-			log.Println("Error while decoding user item")
-		} else {
-			users = append(users, singleUser)
-		}
-	}
+	users, err := s.userRepository.GetAll(ctx)
 
 	return users, err
 }

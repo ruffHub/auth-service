@@ -1,10 +1,10 @@
 package app
 
 import (
-	"auth-service/internal/config"
-	"auth-service/internal/db"
-	"auth-service/internal/modules/user"
-	"auth-service/internal/server"
+	"github.com/ruffHub/auth-service/internal/config"
+	"github.com/ruffHub/auth-service/internal/db"
+	"github.com/ruffHub/auth-service/internal/modules/user"
+	"github.com/ruffHub/auth-service/internal/server"
 )
 
 func Run() {

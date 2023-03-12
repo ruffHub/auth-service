@@ -1,8 +1,8 @@
 package server
 
 import (
-	"auth-service/internal/config"
 	"github.com/gorilla/mux"
+	"github.com/ruffHub/auth-service/internal/config"
 	"log"
 	"net/http"
 )

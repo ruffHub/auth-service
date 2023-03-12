@@ -1,7 +1,7 @@
 package db
 
 import (
-	"auth-service/internal/config"
+	"github.com/ruffHub/auth-service/internal/config"
 
 	"context"
 	"fmt"

@@ -1,4 +1,4 @@
-module auth-service
+module github.com/ruffHub/auth-service
 
 go 1.18
 
